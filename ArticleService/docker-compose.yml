@@ -1,0 +1,114 @@
+﻿version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: articles
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - article-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - article-network
+
+  article-service-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      Database__Connection: Host=postgres;Port=5432;Database=articles;User Id=postgres;Password=password;
+      Redis__Connection: redis:6379
+    ports:
+      - "5001:80"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - article-network
+
+  article-service-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      Database__Connection: Host=postgres;Port=5432;Database=articles;User Id=postgres;Password=password;
+      Redis__Connection: redis:6379
+    ports:
+      - "5002:80"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - article-network
+
+  article-service-3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      Database__Connection: Host=postgres;Port=5432;Database=articles;User Id=postgres;Password=password;
+      Redis__Connection: redis:6379
+    ports:
+      - "5003:80"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - article-network
+
+  article-service-4:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      Database__Connection: Host=postgres;Port=5432;Database=articles;User Id=postgres;Password=password;
+      Redis__Connection: redis:6379
+    ports:
+      - "5004:80"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - article-network
+
+  article-service-5:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:80
+      Database__Connection: Host=postgres;Port=5432;Database=articles;User Id=postgres;Password=password;
+      Redis__Connection: redis:6379
+    ports:
+      - "5005:80"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - article-network
+
+volumes:
+  postgres_data:
+
+networks:
+  article-network:
+    driver: bridge
